@@ -20,6 +20,8 @@ char	*ft_fill_buffer(char *final_buffer, int newline)
 
 	if (!final_buffer)
 		return (NULL);
+	if (final_buffer[0] == '\0')
+		return (NULL);
 	i = 0;
 	if (newline > -1)
 	{
@@ -52,10 +54,9 @@ void	ft_fill_remainder(char **remainder_buff, char **final_buff, int nl)
 	if (!(*remainder_buff))
 		return ;
 	i = 0;
-	printf("%c", *final_buff[nl]);
-	while (*final_buff[nl] != '\0')
-		remainder_buff[i++] = final_buff[nl++];
-	*remainder_buff[i] = '\0';
+	while ((*final_buff)[nl] != '\0')
+		(*remainder_buff)[i++] = (*final_buff)[nl++];
+	(*remainder_buff)[i] = '\0';
 	return ;
 }
 
