@@ -18,7 +18,7 @@ int	main(void)
 	int	fd;
 	char	*line;
 
-	fd = open("hola.txt", O_RDONLY);
+	fd = open("caracola.txt", O_RDONLY);
 	if (fd == -1)
 		return (-1);
 	line = get_next_line(fd);
