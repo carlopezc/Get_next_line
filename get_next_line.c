@@ -64,6 +64,8 @@ void	ft_read_and_join(char **final_buffer, int fd, ssize_t *bytes_read)
 	if (!initial_buffer)
 		return ;
 	*bytes_read = read(fd, initial_buffer, BUFFER_SIZE);
+	if (*bytes_read == -1)
+		return ;
 	initial_buffer[*bytes_read] = '\0';
 	*final_buffer = ft_strjoin(*final_buffer, initial_buffer);
 	initial_buffer = NULL;

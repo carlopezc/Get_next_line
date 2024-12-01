@@ -16,11 +16,13 @@
 int	main(void)
 {
 	int	fd;
+	int	fd2;
 	char	*line;
 
-	fd = open("caracola.txt", O_RDONLY);
+	fd = open("hola.txt", O_RDONLY);
 	if (fd == -1)
 		return (-1);
+	fd2 = open("caracola.txt", O_RDONLY);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -30,5 +32,14 @@ int	main(void)
 		line = get_next_line(fd);
 	}
 	close(fd);
+	line = get_next_line(fd2);
+	while (line)
+	{
+		printf("%s", line);
+		free(line);
+		line = NULL;
+		line = get_next_line(fd2);
+	}
+	close(fd2);
 	return (0);
 }
