@@ -1,5 +1,14 @@
-
-//Falta header
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: carlopez <carlopez@student.42barcelon      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/12/02 15:18:30 by carlopez          #+#    #+#             */
+/*   Updated: 2024/12/02 15:30:54 by carlopez         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
@@ -31,19 +40,19 @@ char	*ft_fill_buffer(char *final_buffer, int newline)
 	return (line);
 }
 
-void	ft_fill_remainder(char **remainder_buff, char **final_buff, int nl, int fd)
+void	ft_fill_remainder(char **remainder, char **final, int nl, int fd)
 {
 	int	len;
 	int	i;
 
-	len = ft_strlen(*final_buff) - nl;
-	remainder_buff[fd] = (char *)malloc((len + 1) * sizeof(char));
-	if (!remainder_buff[fd])
+	len = ft_strlen(*final) - nl;
+	remainder[fd] = (char *)malloc((len + 1) * sizeof(char));
+	if (!remainder[fd])
 		return ;
 	i = 0;
-	while ((*final_buff)[nl] != '\0')
-		remainder_buff[fd][i++] = (*final_buff)[nl++];
-	remainder_buff[fd][i] = '\0';
+	while ((*final)[nl] != '\0')
+		remainder[fd][i++] = (*final)[nl++];
+	remainder[fd][i] = '\0';
 	return ;
 }
 
@@ -55,6 +64,8 @@ void	ft_read_and_join(char **final_buffer, int fd, ssize_t *bytes_read)
 	if (!initial_buffer)
 		return ;
 	*bytes_read = read(fd, initial_buffer, BUFFER_SIZE);
+	if (*bytes_read == -1)
+		return (free(initial_buffer));
 	initial_buffer[*bytes_read] = '\0';
 	*final_buffer = ft_strjoin(*final_buffer, initial_buffer);
 	initial_buffer = NULL;
@@ -77,7 +88,9 @@ char	*ft_manage(int fd, char **remainder_buffer, char **final_buffer)
 			return (ft_fill_buffer(*final_buffer, newline));
 		}
 		ft_read_and_join(final_buffer, fd, &bytes_read);
-	}	
+		if (bytes_read == -1)
+			return (free(*final_buffer), NULL);
+	}
 	newline = ft_search_nl(*final_buffer);
 	if (newline > -1 && newline < ft_strlen(*final_buffer))
 		ft_fill_remainder(remainder_buffer, final_buffer, newline + 1, fd);

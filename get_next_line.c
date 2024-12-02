@@ -6,7 +6,7 @@
 /*   By: carlopez <carlopez@student.42barcelon      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/27 19:23:01 by carlopez          #+#    #+#             */
-/*   Updated: 2024/11/27 22:43:18 by carlopez         ###   ########.fr       */
+/*   Updated: 2024/12/02 15:27:44 by carlopez         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ void	ft_read_and_join(char **final_buffer, int fd, ssize_t *bytes_read)
 		return ;
 	*bytes_read = read(fd, initial_buffer, BUFFER_SIZE);
 	if (*bytes_read == -1)
-		return ;
+		return (free(initial_buffer));
 	initial_buffer[*bytes_read] = '\0';
 	*final_buffer = ft_strjoin(*final_buffer, initial_buffer);
 	initial_buffer = NULL;
@@ -88,7 +88,9 @@ char	*ft_manage(int fd, char **remainder_buffer, char **final_buffer)
 			return (ft_fill_buffer(*final_buffer, newline));
 		}
 		ft_read_and_join(final_buffer, fd, &bytes_read);
-	}	
+		if (bytes_read == -1)
+			return (free(*final_buffer), NULL);
+	}
 	newline = ft_search_nl(*final_buffer);
 	if (newline > -1 && newline < ft_strlen(*final_buffer))
 		ft_fill_remainder(remainder_buffer, final_buffer, newline + 1);
