@@ -25,7 +25,7 @@ This project does not have a `Makefile` for a library. To use it, you must compi
 
     ```bash
     # Replace main.c with your project's files
-    gcc main.c get_next_line.c get_next_line_utils.c -D BUFFER_SIZE=42 -o your_program
+    cc main.c get_next_line.c get_next_line_utils.c -D BUFFER_SIZE=42 -o your_program
     ```
 
 3.  To use it, include the header and call the function in a loop. Here is an example `main.c`:
