@@ -17,32 +17,41 @@ This project is a classic challenge focused on **file I/O** and **static variabl
 
 ## ⚙️ How to Compile & Run
 
-1.  Clone the repository:
-    ```bash
-    git clone [https://github.com/carlopezc/Get_next_line.git](https://github.com/carlopezc/Get_next_line.git)
-    cd Get_next_line
-    ```
-2.  Compile the project:
-    ```bash
-    make
-    ```
-    (O bien, compila tus archivos `.c` manualmente incluyendo `get_next_line.c`, `get_next_line_utils.c`, y tu `main.c`).
+This project does not have a `Makefile` for a library. To use it, you must compile its files along with your own project.
 
-3.  To use it, call the `get_next_line()` function in a loop with a valid file descriptor:
+1.  Add the `get_next_line.c` and `get_next_line_utils.c` (and the `get_next_line.h` header) files to your project's directory.
+
+2.  When compiling your program, include the `.c` files in your command. You **must** also define the `BUFFER_SIZE` with a flag:
+
+    ```bash
+    # Replace main.c with your project's files
+    gcc main.c get_next_line.c get_next_line_utils.c -D BUFFER_SIZE=42 -o your_program
+    ```
+
+3.  To use it, include the header and call the function in a loop. Here is an example `main.c`:
+
     ```c
     #include "get_next_line.h"
-
+    
     int main()
     {
         int fd;
         char *line;
 
+        // Make sure to create a file named "your_file.txt"
         fd = open("your_file.txt", O_RDONLY);
+        if (fd == -1)
+        {
+            printf("Error opening file\n");
+            return (1);
+        }
+        
         while ((line = get_next_line(fd)) != NULL)
         {
             printf("%s", line);
             free(line);
         }
+        
         close(fd);
         return (0);
     }
